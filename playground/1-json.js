@@ -19,6 +19,7 @@ const fs = require('fs')
 const stream = fs.readFileSync('1-json.json');
 console.log(stream)
 const dataJSON = stream.toString();
+console.log(dataJSON)
 const data = JSON.parse(dataJSON);
 data.name = "Matthew";
 data.age = 26;

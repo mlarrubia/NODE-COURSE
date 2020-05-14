@@ -10,6 +10,18 @@ request({ url: url, json: true }, (error, response) => {
     console.log(`${response.body.current.weather_descriptions[0]} It is currently ${actualTemp} degrees out. It feels like ${feelsLikeTemp} degrees out`)
 })
 
-function celciusToFahrenheit(cel) {
-    return (cel * 9 / 5) + 32;
-}
+
+// Geocoding
+
+
+const geoUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places/Los%20Angeles.json?access_token=pk.eyJ1IjoibWxhcnJ1YmlhIiwiYSI6ImNrYTc1NmE1ODBnam4yeG5sc2o4OHFzOHYifQ.6-v_rQy6z1izy6rEDUh0gQ&limit=1'
+
+request({ url: geoUrl, json: true }, (error, response) => {
+    console.log(response.body.features[0].center);
+    const latitude = response.body.features[0].center[0];
+    const longitude = response.body.features[0].center[1]
+
+    console.log("Latitude: ", latitude);
+    console.log("Longitude: ", longitude);
+})
+

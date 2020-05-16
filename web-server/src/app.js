@@ -45,7 +45,21 @@ app.get('/weather', (req, res) => {
         location: "Miami"
     });
 })
-// app.com
+
+app.get('/help/*', (req, res) => {
+    res.render('404', {
+        title: "404",
+        message: "Help article not found"
+    })
+})
+
+// Wild card symbol (*) matches anything that hasnt been matched so far
+app.get('*', (req, res) => {
+    res.render('404', {
+        title: "404",
+        message: "Page not found"
+    });
+})
 
 app.listen(3000, () => {
     console.log('Server is up on port 3000')

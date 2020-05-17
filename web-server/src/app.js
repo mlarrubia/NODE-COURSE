@@ -2,6 +2,9 @@ const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
 
+const forecast = require('./utils/forecast')
+const geocode = require('./utils/geocode')
+
 const app = express();
 
 // Define paths for Express config
@@ -16,6 +19,8 @@ hbs.registerPartials(partialsPath);
 
 // Setup static directory to serve
 app.use(express.static(publicDirectoryPath))
+
+
 
 app.get('', (req, res) => {
     res.render('index', {
@@ -45,11 +50,24 @@ app.get('/weather', (req, res) => {
             error: "No address provided"
         })
     }
-    res.send({
-        forecast: "Raining",
-        location: "Miami",
-        address: req.query.address
-    });
+
+    geocode(req.query.address, (error, { latitude, longitude, location }) => {
+        if (error) {
+            return res.send({ error })
+        }
+
+        forecast(latitude, longitude, (error, forecastData) => {
+            if (error) {
+                return res.send({ error })
+            }
+
+            res.send({
+                forecast: forecastData,
+                location,
+                address: req.query.address
+            })
+        })
+    })
 })
 
 app.get('/products', (req, res) => {

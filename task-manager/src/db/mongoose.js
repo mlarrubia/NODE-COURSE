@@ -32,36 +32,50 @@ const User = mongoose.model('User', {
                 throw new Error("Age must be a positive Number")
             }
         }
+    },
+    password: {
+        type: String,
+        required: true,
+        trim: true,
+        minlength: 7,
+        validate(value) {
+            if (value.toLowerCase().includes('password')) {
+                throw new Error("Password cannot contain password")
+            }
+        }
     }
 })
 
-const me = new User({
-    name: "   Mike    ",
-    email: "miDSDSFDSke@gmail.com"
-})
-
-me.save().then((result) => {
-    console.log(result)
-}).catch((error) => {
-    console.log(error)
-})
-
-// const Task = mongoose.model('Task', {
-//     description: {
-//         type: String
-//     },
-//     completed: {
-//         type: Boolean
-//     }
+// const me = new User({
+//     name: "   Mike    ",
+//     email: "miDSDSFDSke@gmail.com",
+//     password: "password"
 // })
 
-// const task1 = new Task({
-//     description: "Clean house",
-//     completed: false
-// })
-
-// task1.save().then((result) => {
+// me.save().then((result) => {
 //     console.log(result)
 // }).catch((error) => {
 //     console.log(error)
 // })
+
+const Task = mongoose.model('Task', {
+    description: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    completed: {
+        type: Boolean,
+        default: false
+    }
+})
+
+const task1 = new Task({
+    description: "Eat dinner"
+})
+
+task1.save().then((result) => {
+    console.log(result)
+}).catch((error) => {
+    console.log(error)
+})
